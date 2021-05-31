@@ -1,0 +1,78 @@
+# COMP9315 21T1 Final Exam Q6
+  
+Type your answer(s) to replace the xxx's
+Submit this file as your answer for Q6
+
+Given,
+
+b_R = 40 Data Pages
+b_S = 20 Data pages
+N = 25 buffers
+
+a.
+
+Case 1: R is outer
+
+b_R + (b_S x ceil (b_R/N-2))
+		= 40 + (20 x ceil (40/25-2))
+		= 40 + (20 x 2)
+		= 80
+
+Case 2: S is outer
+
+b_S + (b_R x ceil (b_S/N-2))
+		= 20 + (40 x ceil (20/25-2))
+		= 20 + (40 x 1)
+		= 60
+
+Min buffer is 22 as with 21 and less the value starts to increase.
+
+
+b.
+
+Cost for sorting R:
+2 x b_R x (ceil (log(N-1) (b_R/N)) + 1)
+	   = 2 x 40 x (ceil (log(25-1) (40/25)) +1)
+		   = 80 x 2 = 160
+
+Cost for sorting S:
+2 x b_S x (ceil (log(N-1) (b_S/N)) + 1)
+	  = 2 x 20 x (ceil (log(25-1) (20/25)) +1)
+	  = 40 x 1 = 40
+
+Total Cost  = cost_sort_R + cost_sort_S + b_S + b_R
+            = 160+ 40 +20 + 40 = 260
+
+Min buffer is 60 as with 59 and less the value starts to increase.
+
+
+c.
+
+Cost of Sorting S: 
+2 x b_S x (ceil (log(N-1) (b_S/N)) + 1)
+	  = 2 x 20 x (ceil (log(25-1) (20/25)) +1)
+		  = 40 x 1 = 40
+
+Total Cost  = cost_sort_S + b_S + b_R
+            = 40+ 20 + 40 = 100
+
+Min buffer is 20 as with 19 and less the value starts to increase.
+
+d.
+
+Cost of sorting R:
+2 x b_R x (ceil (log(N-1) (b_R/N)) + 1)
+	   = 2 x 40 x (ceil (log(25-1) (40/25)) +1)
+	   = 80 x 2 = 160
+
+Total Cost = cost_sort_R + b_S + b_R
+        = 160 +20 + 40 = 220
+
+Min buffer is 7 as with 6 and less the value starts to increase.
+
+
+e.
+
+Final Cost  = b_S + b_R
+            = 20 + 40 = 60
+

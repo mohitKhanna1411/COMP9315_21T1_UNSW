@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP9315 Final Exam </title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='20%'>
+  <span class='tiny'>COMP9315 Final Exam</span>
+</td>
+<td align='center' width='60%'>
+  The University of New South Wales <br>
+  <span class='heading'>COMP9315 DBMS Implementation <br>  Final Exam</span>
+</td>
+<td align='right' width='20%'>
+  <span class='tiny'>DBMS Implementation</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='PostgreSQL' href='https://www.postgresql.org/docs/12/index.html'>[PostgreSQL]</a> <a target='C' href='c-lang/index.html'>[C]</a> 
+<br>
+<a href='Q01.html'>[Q1]</a> <a href='Q02.html'>[Q2]</a> <a href='Q03.html'>[Q3]</a> <a href='Q04.html'>[Q4]</a> <a href='Q05.html'>[Q5]</a> <a href='Q06.html'>[Q6]</a> <a href='Q07.html'>[Q7]</a> <a href='Q08.html'>[Q8]</a> <b>[Q9]</b> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 9 <span class='tiny'>(4 marks)</span></h3>
+<p>
+Consider the following three transactions:
+</p>
+<pre>
+<b>T1:                T2:                 T3:</b>
+start              start               start
+read(A)            read(B)             read(A)
+A = A - 50         B = B -20           read(B)
+read(B)            write(B)            C = A+B
+B = B + 50         commit              write(C)
+write(A)                               commit
+write(B)
+commit
+</pre>
+<p>
+Assuming that initially <tt>A=100</tt>, <tt>B=50</tt>, <tt>C=20</tt>,
+show the undo/redo log that would be produced if these
+transactions ran with the following schedule:
+</p>
+<pre>
+  +    +    +    +    +    +    +    +    +    +    +    +    +    +    +    +
+&nbsp;
+T1:    S    R(A)                R(B)           W(A) W(B)      C
+T2:                                       S                        R(B) W(B) C
+T3:              S    R(A) R(B)      W(C)                C
+&nbsp;
+  +    +    +    +    +    +    +    +    +    +    +    +    +    +    +    +
+</pre>
+
+<p><b>Instructions:</b></p>
+<ul>
+<li> Type your answer to this question into the file called <tt>q9.txt</tt>
+<li> Submit via: &nbsp; <b><tt>give cs9315 exam_q9 q9.txt</tt></b> <br>
+	or via: Webcms3 &gt; exams &gt; Final Exam &gt; Submit Q<nobr>9</nobr> &gt; Make Submission
+</ul>
+
+</div>
+<center><i>End of Question</i></center>
+</body>
+</html>

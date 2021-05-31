@@ -1,0 +1,42 @@
+# COMP9315 21T1 Final Exam Q8
+  
+Type your answer(s) to replace the xxx's
+Submit this file as your answer for Q8
+
+a. Validation for T1
+
+T2 doesn't start/validate during validation/writing of T1. Hence T2 will not rollback.
+
+T3 satify both the cases but
+Intersection of R_D(T3) and W_S(T1) is NULL and
+Intersection of W_S(T3) and W_S(T1) is also NULL.
+Hence, T3 will not rollback.
+
+T4 starts during validation/writing and Intersection of R_D(T4) and W_S(T1) is {A}.
+Hence, T4 will be rollback and waits for T1 to finish.
+
+
+b. Validation for T2
+
+T1 reading/validation overlaps with validation/writing but Intersection of R_D(T1) and W_S(T2) is NULL
+and intersection of W_S(T2) and W_S(T1) is also NULL.
+Hence T1 will not rollback.
+
+T3 reading/validation overlaps with validation/writing of T2 and intersection of WS(T3) and WS(T2) is {D}
+Hence, T3 will rollback and wait for T2 to finish.
+
+T4 starts after T2 finishes
+Hence, it's serializable.
+
+
+c. Validation for T3
+
+T4 reading/validation overlaps with reading/validation and intersection of R_D(T4) and W_S(T3) is {D}.
+Hence, T4 will rollback and wait for T3 to finish and then start.
+
+
+d. Validation for T4
+
+T1 and T2 may executes as given. 
+T3 must wait for T2 to finish.
+T4 must wait for T3 to finish.

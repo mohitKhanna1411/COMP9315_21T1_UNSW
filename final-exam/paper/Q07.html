@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP9315 21T1 Final Exam </title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='20%'>
+  <span class='tiny'>COMP9315 21T1 Final Exam</span>
+</td>
+<td align='center' width='60%'>
+  The University of New South Wales <br>
+  <span class='heading'>COMP9315 DBMS Implementation <br>  21T1 Final Exam</span>
+</td>
+<td align='right' width='20%'>
+  <span class='tiny'>DBMS Implementation</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='PostgreSQL' href='https://www.postgresql.org/docs/12/index.html'>[PostgreSQL]</a> <a target='C' href='c-lang/index.html'>[C]</a> 
+<br>
+<a href='Q01.html'>[Q1]</a> <a href='Q02.html'>[Q2]</a> <a href='Q03.html'>[Q3]</a> <a href='Q04.html'>[Q4]</a> <a href='Q05.html'>[Q5]</a> <a href='Q06.html'>[Q6]</a> <b>[Q7]</b> <a href='Q08.html'>[Q8]</a> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 7 <span class='tiny'>(8 marks)</span></h3>
+<p>
+Consider the following database schema:
+</p>
+<pre>
+create table People (
+	id       integer primary key,
+	name     text,
+	worksin  integer references Departments(id)
+);
+create table Departments (
+	id       integer primary key,
+	name     text,
+	manager  integer references People(id)
+);
+create table Projects (
+	id       integer primary key,
+	name     text,
+	fundedby integer references Departments(id)
+);
+create table WorksOn (
+	person   integer references People(id),
+	project  integer references Projects(id),
+	percent  integer
+);
+</pre>
+<p>
+<small>(Yes, it has a forward reference in the foreign key declarations.
+Ignore that and the circular dependencies for the purpose of this exercise.)
+</small>
+</p>
+<p>
+We have built and populated a database based on this schema.
+We ran a collection of queries and obtained execution
+plans by using <tt>EXPLAIN ANALYZE</tt>.
+</p>
+<p>
+Answer the question associated with each of the execution plans below:
+</p>
+<ol type="a">
+<li>
+<p>How many tuples are there in the <tt>People</tt> table?</p>
+<pre>
+Aggregate
+   (cost=189.00..189.01 rows=1 width=0)
+   (actual time=2.899..2.899 rows=1 loops=1)
+   ->  Seq Scan on people
+          (cost=0.00..164.00 rows=10000 width=0)
+          (actual time=0.010..1.594 rows=10000 loops=1)
+Total runtime: 2.932 ms
+</pre>
+<li>
+<p>What query produced the following execution plan?</p>
+<pre>
+Index Scan using people_pkey on people
+   (cost=0.00..8.41 rows=9 width=21)
+   (actual time=0.017..0.021 rows=9 loops=1)
+   Index Cond: (id > 9990)
+Total runtime: 0.048 ms
+</pre>
+<li>
+<p>Give a relational agebra expression corresponding to the
+query execution plan below.
+Use the notation that we have been using in lectures for
+relational algebra operators (&sigma; as <tt>Sel</tt>,
+ &pi; as <tt>Proj</tt>, &bowtie; as <tt>Join</tt>)
+in the tree.
+Some examples:
+</p>
+<ul>
+<li> &sigma;<sub>x&gt;1</sub>R &nbsp; would be written as &nbsp; <tt>Sel[x&gt;1](R)</tt>
+<li> &pi;<sub>a,b</sub>T &nbsp; would be written as &nbsp; <tt>Proj[a,b](T)</tt>
+<li> (R &bowtie;<sub>a=d</sub> S) &nbsp; would be written as &nbsp; <tt>(R Join[a=d] S)</tt>
+</ul>
+<p>
+There is no need to show operations
+like <tt>Hash</tt> which are part of the hash-join operation.
+</p>
+<pre>
+Nested Loop
+      (cost=120.38..644.57 rows=27 width=13)
+      (actual time=2.786..10.844 rows=29 loops=1)
+   -> Hash Join
+         (cost=120.38..636.60 rows=27 width=4)
+         (actual time=2.770..10.735 rows=29 loops=1)
+         Hash Cond: (w.project = j.id)
+         -> Seq Scan on workson w
+               (cost=0.00..415.06 rows=26906 width=8)
+               (actual time=0.012..3.833 rows=26906 loops=1)
+         -> Hash
+               (cost=120.31..120.31 rows=5 width=4)
+               (actual time=2.586..2.586 rows=12 loops=1)
+               -> Hash Join
+                     (cost=19.51..120.31 rows=5 width=4)
+                     (actual time=0.971..2.583 rows=12 loops=1)
+                     Hash Cond: (j.fundedby = d.id)
+                     -> Seq Scan on projects j
+                           (cost=0.00..82.00 rows=5000 width=8)
+                           (actual time=0.007..0.769 rows=5000 loops=1)
+                     -> Hash
+                           (cost=19.50..19.50 rows=1 width=4)
+                           (actual time=0.825..0.825 rows=1 loops=1)
+                           -> Seq Scan on departments d
+                                 (cost=0.00..19.50 rows=1 width=4)
+                                 (actual time=0.022..0.822 rows=1 loops=1)
+                                 Filter: (name = 'Sales Department'::text)
+   -> Index Scan using people_pkey on people p
+         (cost=0.00..0.28 rows=1 width=17)
+         (actual time=0.003..0.003 rows=1 loops=29)
+         Index Cond: (p.id = w.person)
+Total runtime: 42.917 ms
+(14 rows)
+</pre>
+<li>
+<p>
+If I run the query that produced the above plan a second time,
+it takes only <tt>10.912 ms</tt>, and subsequent executions of
+this query are all around <tt>11 ms</tt>. Explain why.
+</p>
+</ol>
+<p>
+Show all working.
+</p>
+<p><b>Instructions:</b></p>
+<ul>
+<li> Type your answer to this question into the file called <tt>q7.txt</tt>
+<li> Submit via: &nbsp; <b><tt>give cs9315 exam_q7 q7.txt</tt></b> <br>
+	or via: Webcms3 &gt; exams &gt; Final Exam &gt; Q<nobr>7</nobr> submission &gt; Make Submission
+</ul>
+
+</div>
+<center><i>End of Question</i></center>
+</body>
+</html>

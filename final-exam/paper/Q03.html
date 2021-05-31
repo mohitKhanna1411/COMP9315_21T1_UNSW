@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP9315 21T1 Final Exam </title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='20%'>
+  <span class='tiny'>COMP9315 21T1 Final Exam</span>
+</td>
+<td align='center' width='60%'>
+  The University of New South Wales <br>
+  <span class='heading'>COMP9315 DBMS Implementation <br>  21T1 Final Exam</span>
+</td>
+<td align='right' width='20%'>
+  <span class='tiny'>DBMS Implementation</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='PostgreSQL' href='https://www.postgresql.org/docs/12/index.html'>[PostgreSQL]</a> <a target='C' href='c-lang/index.html'>[C]</a> 
+<br>
+<a href='Q01.html'>[Q1]</a> <a href='Q02.html'>[Q2]</a> <b>[Q3]</b> <a href='Q04.html'>[Q4]</a> <a href='Q05.html'>[Q5]</a> <a href='Q06.html'>[Q6]</a> <a href='Q07.html'>[Q7]</a> <a href='Q08.html'>[Q8]</a> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 3 <span class='tiny'>(20 marks)</span></h3>
+<p>
+In Assignment 2, you wrote signature-based indexing schemes.
+A critical component of these was a <tt>Bits</tt> ADT for
+arbitrary-length bit-strings. In the Assignment, the
+implementation of bit-strings was based on an array of
+8-bit bytes. In this question, we plan to re-implement the
+<tt>Bits</tt> ADT so that it uses an array of 32-bit words
+(<tt>unsigned int</tt>) to hold the bit-string.
+The following diagram shows the difference between the two
+implementations:
+</p>
+<center><img src="Pics/bits-vs-bits.png"></center>
+<p>
+Note that all of the bits (40 in the byte-based version, 64 in the
+word-based implementation) are set to 1, even though only 36 bits
+are required. The value of the "extra" bits is irrelevant, since these
+bits should be ignored, and only bits 0..<i>nbits</i>-1 should be accessed.
+</p>
+<p>
+We have supplied a partly complete implementation of the <tt>Bits</tt>
+data type in the file <tt>bits.c</tt>.
+This contains seven functions, four of which are complete:
+</p>
+<ul>
+<li> <tt>newBits(int n)</tt> ... creates a new <tt>Bits</tt> object containing <tt>nbits</tt> bits
+<li> <tt>freeBits(Bits b)</tt> ... releases memory associated with a <tt>Bits</tt> object
+<li> <tt>setBit(Bits b, int i)</tt> ... set the i<sup>th</sup> bit in bit-string <tt>b</tt> to 1 (0 &le; i < <i>nbits</i>)
+<li> <tt>setAllBits(Bits b)</tt> ... set all bits in the bit-string to 1
+<li> <tt>unsetBit(Bits b, int i)</tt> ... set the i<sup>th</sup> bit in bit-string <tt>b</tt> to 0 (0 &le; i < <i>nbits</i>)
+<li> <tt>unsetAllBits(Bits b)</tt> ... set all bits in the bit-string to 0
+<li> <tt>showBits(Bits b)</tt> ... display a <tt>Bits</tt> object as a sequence of 1's and 0's
+</ul>
+<p>
+The functions <tt>newBits()</tt>, <tt>freeBits()</tt>, <tt>setAllBits()</tt>,
+and <tt>unsertAllBits()</tt> are complete and you should <em>not</em> modify
+them. Note that <tt>setAllBits()</tt> sets all bits in the bitstring array,
+even though not all of them are used. You should ignore the "extra" unused
+bits.
+</p>
+<p>
+<b>Your task:</b>
+you must complete the <tt>setBit()</tt>, <tt>unsetBit()</tt> and
+<tt>showBits()</tt> functions.
+Note that <tt>showBits()</tt> should show <i>only</i> the <i>nbits</i>
+bits in the bit-string, in the order <i>nbits</i>-1 .. 0.
+</p>
+<p>
+Like the assignment, the words in the array contain
+the low-order bits in <tt>bitstring[0]</tt>,
+up to the high-order bits in <tt>bitstring[nwords-1]</tt>
+Within a <tt>Word</tt>, the low-order bits are at the right-hand end
+of the <tt>Word</tt> and the higher-order bits are at the left-hand 
+end.
+</p>
+<p>
+To test the <tt>Bits</tt> ADT, we have supplied a driver command
+called <tt>./bs</tt> (in the file <tt>bs.c</tt>).
+The <tt>./bs</tt> command is invoked as follows:
+</p>
+<pre>
+$ ./bs  Nbits  +|-  mods
+</pre>
+<p>
+where <tt>Nbits</tt> is (suprise!) the number of bits in the bit-string.
+The second argument can be "<tt>+</tt>", in which case all bits are
+initially  set to 1, or "<tt>-</tt>", in which case all bits are initially
+set to 0.
+This can be followed by an arbitrary number of <i>modifiers</i>.
+Each modifier contains a bit position, preceded by "<tt>+</tt>"
+or "<tt>-</tt>". If "<tt>+</tt>", the specified bit i set to 1;
+if "<tt>-</tt>", the specified bit is set to 0.
+</p>
+<p>
+An example:
+</p>
+<pre>
+$ ./bs  40  +  -10 -20 -30 +20
+init: 1111111111111111111111111111111111111111
+-010: 1111111111111111111111111111101111111111
+-020: 1111111111111111111011111111101111111111
+-030: 1111111110111111111011111111101111111111
++020: 1111111110111111111111111111101111111111
+</pre>
+<p>
+This creates a 40-bit bit-string and initialises all 40 bits to 1.
+It then displays this as the inital (<tt>init:</tt>) value, using
+<tt>showBits()</tt>. It then unsets bits 10, 20 and 30 before setting
+bit 20 back to 1.
+After each modification, it displays the mod and then displays the
+modified bit-string (using <tt>showBits()</tt>).
+</p>
+<p>
+The argument processing and display of each mod is handled from
+within <tt>bs.c</tt>, whose code you should <em>not</em> change.
+<p>
+There are other examples of using <tt>./bs</tt> in the <tt>tests</tt>
+directory.
+You should also be able to devise your own test cases easily
+enough.
+</p>
+<p>
+To help you check whether your program is working correctly,
+there is a script called <tt>run_tests.sh</tt> which will run
+the program against all of the tests and report the results.
+It will also add the output from your program into the 
+<tt>tests</tt> directory; comparing your output against the
+expected output might help you to debug your code.
+You can run the testing script as:
+</p>
+<pre>
+$ <b>sh run_tests.sh</b>
+</pre>
+<p>
+Once your function is working (passes all tests), follow
+the submission instructions below.
+Even if it fails some (or even all) tests, you should submit because
+you can get <i>some</i> marks.
+If your program does not compile, or if you simply submit
+the supplied code, then your "answer" is worth zero marks.
+</p>
+<p><b>Submission Instructions:</b></p>
+<ul>
+<li> Type your answer to this question into the file called <tt>bnl.c</tt>
+<li> Submit via: &nbsp; <b><tt>give cs9315 exam_q3 bits.c</tt></b> <br>
+	or via: Webcms3 &gt; exams &gt; Final Exam &gt; Q<nobr>3</nobr> submission &gt; Make Submission
+</ul>
+
+</div>
+<center><i>End of Question</i></center>
+</body>
+</html>

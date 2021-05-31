@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP9315 21T1 Final Exam </title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='20%'>
+  <span class='tiny'>COMP9315 21T1 Final Exam</span>
+</td>
+<td align='center' width='60%'>
+  The University of New South Wales <br>
+  <span class='heading'>COMP9315 DBMS Implementation <br>  21T1 Final Exam</span>
+</td>
+<td align='right' width='20%'>
+  <span class='tiny'>DBMS Implementation</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='PostgreSQL' href='https://www.postgresql.org/docs/12/index.html'>[PostgreSQL]</a> <a target='C' href='c-lang/index.html'>[C]</a> 
+<br>
+<b>[Q1]</b> <a href='Q02.html'>[Q2]</a> <a href='Q03.html'>[Q3]</a> <a href='Q04.html'>[Q4]</a> <a href='Q05.html'>[Q5]</a> <a href='Q06.html'>[Q6]</a> <a href='Q07.html'>[Q7]</a> <a href='Q08.html'>[Q8]</a> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 1 <span class='tiny'>(20 marks)</span></h3>
+<p>
+Consider the problem of determining which pages to visit for a
+partial-match retrieval query on a file using multi-attribute
+hashing.
+<em>Partial-match queries</em> have known values for some attributes, while the
+values for the other attributes are unknown.
+<em>Multi-attribute hashed files</em> have the following critical parameters:
+</p>
+<ul>
+<li> <i>n</i> = <em>number of attributes</em> in each tuple (indexed from 1..<i>n</i>)
+<li> <i>d</i> = <em>depth</em> of file (file has <i>2<sup>d</sup></i> pages, indexed <i>0..2<sup>d</sup>-1</i>)
+<li> <i>cv</i> = <em>choice vector</em> (which bit from which attribute is used in the combined hash value)
+</ul>
+<p>
+You are to complete a C program that behaves as follows:
+</p>
+<ul>
+<li> takes values for <i>n</i>, <i>d</i>, and <i>cv</i> from its command line
+<li> reads and parses queries, one per line
+<li> for each query, prints a line containing a list of data pages which need to be examined <br>
+	<small>(these pages are selected because they may contain matching tuples according to the hash values in the query)</small>
+</ul>
+<p>
+Some comments on the input formats for choice vectors and queries:
+</p>
+<ul>
+<li><p>
+attributes are indexed from <i>1 .. n</i>; pages are indexed from <i>0 .. 2<sup>d</sup>-1</i>; <br>
+bits are indexed from 31..0, with bit 0 being the least significant (rightmost) bit
+</p></li>
+<li><p>
+there must be no spaces embedded in either choice vectors or queries <br>
+<small>(the parsing functions are not particularly robust and may crash if you type invalid choice vectors and queries)</small>
+</p></li>
+<li><p>
+a <em>choice vector</em> is written as a comma-separated list of attribute indexes
+</p>
+<p>
+Each element in the list determines the source of the next bit in the combined hash
+(starting from bit 0). <br>Each time an attribute appears in the list, the next most
+significant bit from that attribute is used.
+</p>
+<p>
+Example: <tt>1,1,2,2,3</tt> represents the choice vector where
+</p>
+<ul>
+<li> bit 0 of the combined hash value uses bit 0 from attribute 1
+<li> bit 1 of the combined hash value uses bit 1 from attribute 1
+<li> bit 2 of the combined hash value uses bit 0 from attribute 2
+<li> bit 3 of the combined hash value uses bit 1 from attribute 2
+<li> bit 4 of the combined hash value uses bit 0 from attribute 3
+</ul>
+<p>
+The program displays this choice vector as: &nbsp;
+<tt>&lt; (1,0) (1,1) (2,0) (2,1) (3,0) &gt;</tt>
+</p>
+</li>
+<li> <p>
+a <em>query</em> is written as a comma-separated list of attribute values; unknown values are indicated by "?"
+</p>
+<p>
+Examples: for relation <i>R(a,b,c)</i>
+<pre>
+SQL query:   select * from R where a = 1 and c = 'xyz'
+Our format:  1,?,xyz
+
+SQL query    select * from R where b = 5
+Our format:  ?,5,?
+</pre>
+</li>
+</ul>
+<p>
+<p>
+The code for this question is in the <tt>q1</tt> directory, which
+contains:
+<ul>
+<li><tt>pages.c</tt> ... main program for determing pages to be read</li>
+<li><tt>hash.c</tt> ... implementation of a hash function</li>
+<li><tt>hash.h</tt> ... interface definitions for hash function</li>
+<li><tt>bits.c</tt> ... implementation of bit-string ADT</li>
+<li><tt>bits.h</tt> ... interface definitions for bit-string ADT</li>
+<li><tt>Makefile</tt> ...for building the program</li>
+<li><tt>tests/</tt> ... directory containing test cases</li>
+</ul>
+This contains a <tt>Makefile</tt> and several C program
+files (<tt>*.c</tt> and <tt>*.h</tt>).
+The program that you need to modify is contained in the file
+<tt>pages.c</tt>.
+You can compile the program using the <tt>make</tt> command.
+This will give you an executable file called <tt>pages</tt>.
+Examples of running the <tt>pages</tt> command are given below.
+</p>
+<p>
+You should complete the section of code marked with <tt>XXX</tt>.
+You may write all of the code in the main program, or you can define
+as many functions as you want.
+It requires around 40 lines of code to solve this problem; partial
+marks are available if you complete some of the code.
+</p>
+<p>
+Some hints on how to approach this problem:
+</p>
+<ul>
+<li> take a quick look at the <tt>bits.c</tt>, <tt>hash.c</tt> files to see what functions they provide
+<li> you don't need to understand the details of the functions in these files; use them like library functions
+<li> read the data structure definitions and main program in <tt>pages.c</tt> in some detail
+<li> the <tt>makeChoiceVector()</tt> and <tt>parseQuery()</tt> functions show how the data structures are built
+<li> read the block of comments in the main program near XXX, which give you some hints on what to do
+</ul>
+<p>
+Examples of how the program ought to behave when working correctly:
+</p>
+<pre>
+$ <b>./pages  3  4  1,1,2,2</b>   -- 3 attributes, 16 pages, attr 3 unused in hash
+CV = &lt; (1,0) (1,1) (2,0) (2,1) &gt;
+query> <b>?,?,?</b>
+q[1] = ??
+q[2] = ??
+q[3] = ??
+Pages: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+query> <b>a,b,c</b>
+q[1] = 00101111 11100001 00011010 01110001
+q[2] = 11101011 01100101 01010001 10111010
+q[3] = 01101100 01000111 11011011 00100111
+Pages: 9
+query> <b>a,b,?</b>
+q[1] = 00101111 11100001 00011010 01110001
+q[2] = 11101011 01100101 01010001 10111010
+q[3] = ??
+Pages: 9
+query> <b>a,?,c</b>
+q[1] = 00101111 11100001 00011010 01110001
+q[2] = ??
+q[3] = 01101100 01000111 11011011 00100111
+Pages: 1 5 9 13
+query> <b>quit</b>
+
+$ <b>./pages  2  4  1,2,1,2</b>   -- 2 attributes, 16 pages, both attrs used in hash
+CV = &lt; (1,0) (2,0) (1,1) (2,1) &gt;
+query> <b>2,8</b>
+q[1] = 11100101 11000111 10110001 00101000
+q[2] = 00100101 11001000 11110001 10110001
+Pages: 2
+query> <b>2,?</b>
+q[1] = 11100101 11000111 10110001 00101000
+q[2] = ??
+Pages: 0 2 8 10
+query> <b>?,8</b>
+q[1] = ??
+q[2] = 00100101 11001000 11110001 10110001
+Pages: 2 3 6 7
+query> <b>?,?</b>
+q[1] = ??
+q[2] = ??
+Pages: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+query> <b>quit</b>
+</pre>
+<p>
+You should also be able to devise your own test cases.
+</p>
+<p>
+To help you check whether your program is working correctly,
+there is a script called <tt>run_tests.sh</tt> which will run
+the program against all of the tests and report the results.
+It will also add the output from your program into the 
+<tt>tests</tt> directory; comparing your output against the
+expected output might help you to debug your code.
+You can run the testing script as:
+</p>
+<pre>
+$ <b>sh run_tests.sh</b>
+</pre>
+<p>
+Note that the output from the tests looks a little strange
+because it is not showing the query. It shows the <tt>query&gt;</tt>
+prompt, but then immediately starts showing the output from
+determining the pages read.
+</p>
+<p>
+Once your function is working (passes all tests), follow
+the submission instructions below.
+Even if it fails some tests, you should submit because
+you can get <i>some</i> marks.
+If your program does not compile, or if you simply submit
+the supplied code (even with trivial changes),
+then your "answer" is worth zero marks.
+</p>
+<p><b>Submission Instructions:</b></p>
+<ul>
+<li> Type your answer to this question into the file called <tt>pages.c</tt>
+<li> Submit via: &nbsp; <b><tt>give cs9315 exam_q1 pages.c</tt></b> <br>
+	or via: Webcms3 &gt; exams &gt; Final Exam &gt; Q<nobr>1</nobr> submission &gt; Make Submission
+</ul>
+
+</div>
+<center><i>End of Question</i></center>
+</body>
+</html>

@@ -1,0 +1,106 @@
+-- Intset Input
+CREATE FUNCTION intset_in(cstring)
+   RETURNS intset
+   AS '_OBJWD_/intset'
+   LANGUAGE C IMMUTABLE STRICT;
+
+-- Intset Output
+CREATE FUNCTION intset_out(intset)
+   RETURNS cstring
+   AS '_OBJWD_/intset'
+   LANGUAGE C IMMUTABLE STRICT;
+
+-- Type Define
+CREATE TYPE intset (
+   internallength = variable,
+   input = intset_in,
+   output = intset_out,
+   storage = extended
+);
+
+-- Declare Operator functions
+CREATE FUNCTION intset_contain(intset, intset) RETURNS bool
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_union(intset, intset) RETURNS intset
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+--CREATE FUNCTION intset_size(intset) RETURNS int4
+--   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_inter(intset, intset) RETURNS intset
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_diff(intset, intset) RETURNS intset
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_disj(intset, intset) RETURNS intset
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_belong(intset, intset) RETURNS bool
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION intset_eq(intset, intset) RETURNS bool
+   AS '_OBJWD_/intset' LANGUAGE C IMMUTABLE STRICT;
+
+-- Define Operator
+CREATE OPERATOR >@ (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_contain,
+   commutator = >@,
+   restrict = scalarltsel, join = scalarltjoinsel
+);
+
+CREATE OPERATOR || (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_union,
+   commutator = ||
+);
+
+--CREATE OPERATOR @ (
+--   rightarg = intset,
+--   procedure = intset_size
+--);
+
+CREATE OPERATOR && (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_inter,
+   commutator = &&
+);
+
+CREATE OPERATOR - (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_diff,
+   commutator = -
+);
+
+CREATE OPERATOR !! (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_disj,
+   commutator = !!
+);
+
+CREATE OPERATOR @< (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_belong,
+   commutator = @<
+);
+
+CREATE OPERATOR = (
+   leftarg = intset,
+   rightarg = intset,
+   procedure = intset_eq,
+   commutator = =,
+   negator = !=
+);
+
+-- Drop all
+--DROP TABLE mySets;
+--DROP TYPE intset CASCADE;
+--drop table dbsystems ;

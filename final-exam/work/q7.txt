@@ -1,0 +1,23 @@
+# COMP9315 21T1 Final Exam Q7
+  
+Type your answer(s) to replace the xxx's
+Submit this file as your answer for Q7
+
+a.
+
+There are 10000 tuples because it is a sequntial scan without any filter.
+
+
+b.
+
+explain analyze select * from People where id>9990;
+
+
+c.
+
+People Join[id=person] ( WorksOn Join[project=id] (Projects Join[fundedby=id] Sel[name='Sales Department'](Departments)))
+
+
+d.
+
+Hash Join partitions the relations and it stores the largest partition of the outer relation in the memory buffer. Hence, the execution time reduces as the data is accessed from buffer directly.

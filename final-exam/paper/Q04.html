@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP9315 21T1 Final Exam </title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='20%'>
+  <span class='tiny'>COMP9315 21T1 Final Exam</span>
+</td>
+<td align='center' width='60%'>
+  The University of New South Wales <br>
+  <span class='heading'>COMP9315 DBMS Implementation <br>  21T1 Final Exam</span>
+</td>
+<td align='right' width='20%'>
+  <span class='tiny'>DBMS Implementation</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='PostgreSQL' href='https://www.postgresql.org/docs/12/index.html'>[PostgreSQL]</a> <a target='C' href='c-lang/index.html'>[C]</a> 
+<br>
+<a href='Q01.html'>[Q1]</a> <a href='Q02.html'>[Q2]</a> <a href='Q03.html'>[Q3]</a> <b>[Q4]</b> <a href='Q05.html'>[Q5]</a> <a href='Q06.html'>[Q6]</a> <a href='Q07.html'>[Q7]</a> <a href='Q08.html'>[Q8]</a> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 4 <span class='tiny'>(9 marks)</span></h3>
+<p>
+Consider a <em>linear hashed</em> file with the following properties
+</p>
+<ul>
+<li> initially empty (0 pages) data file
+<li> able to hold up to 3 tuples per page
+<li> an associated overflow file (also initially empty)
+<li> a set of keys with the following hash values:
+<p>
+<table border="1" cellpadding="5" cellspacing="0">
+<tr><th>Key</th><th>Hash</th><th>Key</th><th>Hash</th><th>Key</th><th>Hash</th><th>Key</th><th>Hash</th></tr>
+<tr><td>'a'<td>10001<td>'g'<td>00111<td>'m'<td>11101<td>'s'<td>01100</tr>
+<tr><td>'b'<td>00010<td>'h'<td>11000<td>'n'<td>01110<td>'t'<td>00001</tr>
+<tr><td>'c'<td>10011<td>'i'<td>01001<td>'o'<td>01111<td>'u'<td>00010</tr>
+<tr><td>'d'<td>00100<td>'j'<td>11010<td>'p'<td>11000<td>'v'<td>11111</tr>
+<tr><td>'e'<td>10101<td>'k'<td>01011<td>'q'<td>01001<td>'w'<td>01010</tr>
+<tr><td>'f'<td>00110<td>'l'<td>11100<td>'r'<td>01010<td>'x'<td>10101</tr>
+</table>
+</p>
+</ul>
+<p>
+The keys are inserted in alphabetical order starting from <tt>'a'</tt>.
+</p>
+<p>
+Use this trigger for splitting: split <i>before</i> inserting every fifth tuple
+(i.e. just before inserting <tt>'e'</tt>, <tt>'j'</tt>, <tt>'o'</tt>, <tt>'t'</tt>)
+</p>
+<p>
+Show the state of the file(s) at the following points:
+<ol type="a">
+<li><p>
+immediately before each split operation (before inserting the new value)
+</p></li>
+<li>
+<p>
+immediately after each split operation and after inserting the new value
+</p></li>
+<li><p>
+after inserting <tt>'x'</tt>
+</p></li>
+</ol>
+<p>
+The state should include:
+</p>
+<ul>
+<li> the pages of the data file, with tuples indicated by key values
+<li> the depth of the file (<i>d</i>), the position of the split pointer (<i>sp</i>)
+<li> any overflow pages, linked to their corresponding data pages by arrows
+</ul>
+<p>
+An example (<b>not using the above hash values</b>) of what a state
+might look like:
+</p>
+<pre>
+[0] a,b,c -> n,o
+[1] d,e,f -> p,q,r -> s,t
+[2] g,h   -> u
+[3] i,j,k
+[4] l,m   -> v,w,x -> y,z
+
+d = 2 sp = 1
+</pre>
+<p><b>Instructions:</b></p>
+<ul>
+<li> Type your answer to this question into the file called <tt>q4.txt</tt>
+<li> Submit via: &nbsp; <b><tt>give cs9315 exam_q4 q4.txt</tt></b> <br>
+	or via: Webcms3 &gt; exams &gt; Final Exam &gt; Q<nobr>4</nobr> submission &gt; Make Submission
+</ul>
+
+</div>
+<center><i>End of Question</i></center>
+</body>
+</html>

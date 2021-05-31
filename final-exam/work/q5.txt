@@ -1,0 +1,218 @@
+# COMP9315 21T1 Final Exam Q5
+  
+Type your answer(s) to replace the xxx's
+Submit this file as your answer for Q5
+
+a.
+
+lvl 1
+        goto left side (node 1)
+lvl 2
+        goto left side (node 3)
+lvl 3
+        goto right side (node 8)
+lvl 4
+        goto left side
+
+now scan the 17th datapage to find the required tuple.
+
+
+b.
+
+lvl 1
+    goto right side (node 2)
+Now in order to get to 'b' we need to examine both the sub trees at node 2 as value of 'b' in unknown.
+ 
+left sub tree of node 2
+
+lvl 2
+    goto left side (node 5)
+lvl 3
+    goto right side (node 12)
+
+examining both sub trees of node 12
+lvl 4
+    goto left side
+now scan 25th datapage
+
+goto back to node 12
+
+lvl 4
+    goto right side
+now scan 26th datapage
+
+right sub tree of node 2
+
+lvl 2
+    goto right (node 6)
+lvl 3
+    goto right (node 14)
+
+examine both sub trees of node 14
+lvl 4
+    goto left
+scan 29th datapage
+
+goto back to node 14
+
+lvl 4
+    goto right
+scan 30th datapage 
+
+
+c.
+
+examine both the left and right subtrees from root level
+
+left of root node 0
+lvl 1
+    goto left side (node 1)
+lvl 2
+    goto left side (node 3)
+scan both the sub trees of node 3
+
+lvl 3
+    goto left side (node 7)
+lvl 4
+    goto left side 
+scan 15th datapage
+
+go back to node 3
+lvl 3
+    goto right (node 8)
+lvl 4
+    goto left
+scan 17th datapage
+
+right sub tree of node 0
+lvl 1
+    goto right (node 2)
+lvl 2
+    goto left (node 5)
+scan both the sub trees of node 5
+
+lvl 3
+    goto left (node 11)
+lvl 4
+    goto left
+Scan 23rd datapage
+
+go back to node 5
+
+lvl 3
+    goto right (node 12)
+lvl 4
+    goto left
+scan 25th datapage
+
+
+d.
+
+examine both left subtree and right subtrees from root as the value of a < 60
+
+left of root node 0
+lvl 1
+    goto left (node 1)
+scan both sub trees of node 1
+
+left tree of node 1
+{
+lvl 2
+    goto left (node 3)
+lvl 3
+    goto left (node 7)
+lvl 4
+    goto left 
+scan 16th datapage
+
+go back to node 3
+lvl 3
+    goto right (node 8)
+lvl 4
+    goto right
+scan 18th datapage
+}
+
+right tree of node 1
+{
+lvl 2
+    goto right (node 4)
+lvl 3
+    goto left (node 9)
+lvl 4
+    goto left 
+scan 19th datapage
+
+lvl 4
+    goto right
+scan 20th datapage
+
+go back to node 4
+lvl 3
+    goto right (node 10)
+lvl 4
+    goto left
+scan 21st datapage
+lvl 4
+    goto right
+scan data page 22
+}
+
+right tree of node 0
+lvl 1
+    goto right (node 2)
+scan both the subtrees of node 2 
+left tree of node 2
+{
+lvl 2
+    goto left (node 5)
+lvl 3
+    goto left (node 11)
+lvl 4
+    goto right
+scan 24th datapage
+
+go back to node 5
+lvl 3
+    goto right (node 12)
+lvl 4
+    goto left
+scan 25th datapage
+
+lvl 4
+    goto right 
+scan 26th datapage
+}
+
+right tree of node 2
+{
+lvl 2
+    goto right (node 6)
+lvl 3
+    goto left (node 13)
+lvl 4
+    goto left
+scan 27th datapage
+
+lvl 4
+    goto right
+scan 28th datapage
+
+go back to node 6
+
+lvl 3
+    goto right (node 14)
+lvl 4
+    goto left
+scan 29th datapage
+
+lvl 4
+    goto right 
+scan 30th datapage
+}
+
+
+e.
+
+Scan all the avaiable pages
+

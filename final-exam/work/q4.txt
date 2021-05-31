@@ -1,0 +1,110 @@
+# COMP9315 21T1 Final Exam Q4
+
+Type your answer(s) to replace the xxx's
+Submit this file as your answer for Q4
+
+State before inserting 'e'
+
+Initially,
+no of pages = 2, 
+capacity = 3,
+split before inserting every fifth tuple,
+split pointer denoted as *
+
+
+Page    Data    Overflow
+[00]*   d
+[01]    a
+[10]    b
+[11]    c
+
+State after splitting and inserting 'e'
+
+Page    Data    Overflow
+[000]  
+[01]*   a,e
+[10]    b
+[11]    c
+[100]   d
+
+
+State before inserting 'j'
+
+Page    Data    Overflow
+[000]   h
+[01]*   a,e,i
+[10]    b,f
+[11]    c,g
+[100]   d
+
+State after splitting and inserting 'j'
+
+Page    Data    Overflow
+[000]   h
+[001]   a,i
+[10]*   b,f,j
+[11]    c,g
+[100]   d
+[101]   e
+
+
+State before inserting 'o'
+
+Page    Data    Overflow
+[000]   h
+[001]   a,i
+[10]*   b,f,j -> n
+[11]    c,g,k
+[100]   d,l
+[101]   e,m
+
+State after splitting and inserting 'o'
+
+Page    Data    Overflow
+[000]   h
+[001]   a,i
+[010]   b,j 
+[11]*   c,g,k -> o
+[100]   d,l
+[101]   e,m
+[110]   f,n
+
+
+State before inserting 't'
+
+Page    Data    Overflow
+[000]   h,p
+[001]   a,i,q
+[010]   b,j,r 
+[11]*   c,g,k -> o
+[100]   d,l,s
+[101]   e,m
+[110]   f,n
+
+State after splitting and inserting 't'
+
+Page    Data    Overflow
+[000]*  h,p
+[001]   a,i,q -> t 
+[010]   b,j,r 
+[011]   c,k
+[100]   d,l,s
+[101]   e,m
+[110]   f,n
+[111]   g,o
+
+
+State after inserting 'x'
+
+depth = 3,
+split pointer = 0
+
+Page    Data    Overflow
+[000]*  h,p
+[001]   a,i,q -> t 
+[010]   b,j,r -> u,w
+[011]   c,k
+[100]   d,l,s
+[101]   e,m,x
+[110]   f,n
+[111]   g,o,v

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "page.h": "c",
+        "psig.h": "c",
+        "hash.h": "c"
+    }
+}

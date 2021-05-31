@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>COMP9315 21T1 Final Exam </title>
+<link rel='stylesheet' type='text/css' href='exam.css'></head>
+<body>
+<div align='center'>
+<table width='100%' border='0'>
+<tr valign='top'>
+<td align='left' width='20%'>
+  <span class='tiny'>COMP9315 21T1 Final Exam</span>
+</td>
+<td align='center' width='60%'>
+  The University of New South Wales <br>
+  <span class='heading'>COMP9315 DBMS Implementation <br>  21T1 Final Exam</span>
+</td>
+<td align='right' width='20%'>
+  <span class='tiny'>DBMS Implementation</span>
+</td>
+</table>
+</div>
+<center><a href='index.html'>[Instructions]</a> <a target='PostgreSQL' href='https://www.postgresql.org/docs/12/index.html'>[PostgreSQL]</a> <a target='C' href='c-lang/index.html'>[C]</a> 
+<br>
+<a href='Q01.html'>[Q1]</a> <a href='Q02.html'>[Q2]</a> <a href='Q03.html'>[Q3]</a> <a href='Q04.html'>[Q4]</a> <a href='Q05.html'>[Q5]</a> <a href='Q06.html'>[Q6]</a> <a href='Q07.html'>[Q7]</a> <b>[Q8]</b> 
+</center>
+<hr>
+<div style='margin-left:40px;margin-right:40px'>
+<h3>Question 8 <span class='tiny'>(6 marks)</span></h3>
+<p>
+Consider the following four transactions and their read/write sets:
+</p>
+<center>
+<table border="1" cellpadding="6" cellspacing="0">
+<tr><th>Tx</th><th>Read Set</th><th>Write Set</th>
+<tr><td>T<sub>1</sub></td><td>{A,B}</td><td>{A,C}</td></tr>
+<tr><td>T<sub>2</sub></td><td>{B}</td><td>{D}</td></tr>
+<tr><td>T<sub>3</sub></td><td>{B}</td><td>{D,E}</td></tr>
+<tr><td>T<sub>4</sub></td><td>{A,D}</td><td>{A,C}</td></tr>
+</table>
+</center>
+<p>
+Consider now the following partial schedule for these transactions
+implemented under an <em>optimistic concurrency control</em> scheme:
+</p>
+<pre>
+  +   +   +   +   +   +   +   +   +   +   +   +   +   +
+&nbsp;
+T<sub>1</sub>:   S           V                   F
+T<sub>2</sub>:       S   V           F
+T<sub>3</sub>:                   S           V           F
+T<sub>4</sub>:                           S           V       F
+&nbsp;
+  +   +   +   +   +   +   +   +   +   +   +   +   +   +
+</pre>
+<p>
+Note that the schedule only displays the steps that are critical to
+optimistic concurrency control:
+</p>
+<ul>
+<li> <tt>S</tt> = start of transaction
+<li> <tt>V</tt> = validation check for transaction
+<li> <tt>F</tt> = end of transaction
+</ul>
+<p>
+Using the above schedule describe what happens during the
+validation for each transaction, and what is the outcome
+of the validation check.
+Note that some of the read/write operations in the schedule
+may not actually occur if the corresponding transaction is
+rolled back at the validation check.
+</p>
+<p>
+Show all working.
+</p>
+<p><b>Instructions:</b></p>
+<ul>
+<li> Type your answer to this question into the file called <tt>q8.txt</tt>
+<li> Submit via: &nbsp; <b><tt>give cs9315 exam_q8 q8.txt</tt></b> <br>
+	or via: Webcms3 &gt; exams &gt; Final Exam &gt; Q<nobr>8</nobr> submission &gt; Make Submission
+</ul>
+
+</div>
+<center><i>End of Question</i></center>
+</body>
+</html>
